@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>TheSingularityWorkshop.MicroBundleIngestor</AssemblyName>
+    <RootNamespace>TheSingularityWorkshop.MicroBundleIngestor</RootNamespace>
+    <Version>0.1.0-alpha.1</Version>
+    <Authors>Trent Best</Authors>
+    <Company>The Singularity Workshop</Company>
+    <Description>Ingests external capabilities and produces transport-neutral capability definitions for Forge.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleIngestor</RepositoryUrl>
+    <UseMicroBundleRepositoryRest>false</UseMicroBundleRepositoryRest>
+  </PropertyGroup>
+
+  <!--
+    REST is an integration adapter, not a core domain dependency.
+    Enable this explicitly after the REST package is available from an approved feed.
+  -->
+  <ItemGroup Condition="'$(UseMicroBundleRepositoryRest)' == 'true'">
+    <PackageReference Include="TheSingularityWorkshop.MicroBundleRepository.Rest" Version="0.1.0-alpha.5" />
+  </ItemGroup>
+</Project>
