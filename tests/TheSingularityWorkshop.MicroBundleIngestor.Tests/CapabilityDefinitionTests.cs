@@ -40,7 +40,8 @@ public sealed class CapabilityDefinitionTests
                     [
                         new ApiParameterDefinition("latitude", "query", true, "number", null, []),
                         new ApiParameterDefinition("category", "query", false, "string", null, ["restaurant", "museum"])
-                    ])
+                    ],
+                    [new ApiResponseDefinition("200", "Places found", "array", "application/json")])
             ]);
 
         var capability = CapabilityCompiler.Compile(definition);
@@ -50,6 +51,8 @@ public sealed class CapabilityDefinitionTests
         Assert.Equal(2, operation.Inputs.Count);
         Assert.Equal("geographic-coordinate", operation.Inputs[0].SemanticType);
         Assert.Equal("enumeration", operation.Inputs[1].SemanticType);
-        Assert.Empty(operation.Outputs);
+        Assert.Single(operation.Outputs);
+        Assert.Equal("array", operation.Outputs[0].ValueType);
+        Assert.Equal("json", operation.Outputs[0].SemanticType);
     }
 }
