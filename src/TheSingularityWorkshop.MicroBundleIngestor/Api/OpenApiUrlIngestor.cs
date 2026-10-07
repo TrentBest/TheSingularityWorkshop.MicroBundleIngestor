@@ -75,7 +75,8 @@ public sealed class OpenApiUrlIngestor(HttpClient httpClient)
                     path.Name,
                     GetString(operation, "summary"),
                     GetString(operation, "description"),
-                    ParseParameters(operation)));
+                    ParseParameters(operation),
+                    ParseResponses(operation)));
             }
         }
 
@@ -109,6 +110,39 @@ public sealed class OpenApiUrlIngestor(HttpClient httpClient)
                     allowedValues);
             })
             .Where(parameter => !string.IsNullOrWhiteSpace(parameter.Name))
+            .ToArray();
+    }
+
+    private static IReadOnlyList<ApiResponseDefinition> ParseResponses(JsonElement operation)
+    {
+        if (!operation.TryGetProperty("responses", out var responses) ||
+            responses.ValueKind != JsonValueKind.Object)
+            return [];
+
+        return responses.EnumerateObject()
+            .Select(response =>
+            {
+                string? schemaType = null;
+                string? contentType = null;
+
+                if (response.Value.TryGetProperty("content", out var content) &&
+                    content.ValueKind == JsonValueKind.Object)
+                {
+                    var mediaType = content.EnumerateObject().FirstOrDefault();
+                    if (!string.IsNullOrWhiteSpace(mediaType.Name))
+                    {
+                        contentType = mediaType.Name;
+                        if (mediaType.Value.TryGetProperty("schema", out var schema))
+                            schemaType = GetString(schema, "type");
+                    }
+                }
+
+                return new ApiResponseDefinition(
+                    response.Name,
+                    GetString(response.Value, "description"),
+                    schemaType,
+                    contentType);
+            })
             .ToArray();
     }
 
