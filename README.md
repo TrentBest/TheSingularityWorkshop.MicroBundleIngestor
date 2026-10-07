@@ -4,10 +4,22 @@ The Forge needs a way to turn an external capability into something an Experienc
 
 This repository is the ingestion boundary.
 
+## Visual Studio
+
+The repository includes the traditional `.sln` solution used by Visual Studio, containing:
+
+- **TheSingularityWorkshop.MicroBundleIngestor** — executable/tooling project.
+- **TheSingularityWorkshop.MicroBundleIngestor.Tests** — xUnit test project.
+
+The newer `.slnx` file is retained as an additional .NET solution representation.
+
+Open **TheSingularityWorkshop.MicroBundleIngestor.sln** in Visual Studio and the source and test projects will appear in Solution Explorer.
+
 ## First target
 
 Give the ingestor a URL containing an OpenAPI/Swagger JSON document.
 
+```text
 URL
   -> MicroBundleIngestor
   -> canonical API Experience definition
@@ -15,6 +27,7 @@ URL
   -> Experience GUI and request composition
   -> external REST API
   -> dynamic result
+```
 
 The ingestor does not hard-code a GUI for a particular API. It captures the information Forge needs to construct one.
 
@@ -22,22 +35,26 @@ For example, a places API can become an Experience that asks the player for a lo
 
 The same API description can later support a second path:
 
+```text
 API definition
   -> request
   -> mesh / terrain / place data
   -> MicroBundle cache
   -> Experience
+```
 
 The API contract is reusable capability metadata. Returned world data is a potentially cacheable MicroBundle payload.
 
 ## REST repository boundary
 
-The project references TheSingularityWorkshop.MicroBundleRepository.Rest because the eventual publication path is:
+The project references `TheSingularityWorkshop.MicroBundleRepository.Rest` because the eventual publication path is:
 
+```text
 Forge / Ingestor
   -> IMicroBundleRepository
   -> REST repository adapter
   -> MicroBundle Repository
+```
 
 The ingestor should never know whether the repository is backed by Azure, another service, or something else.
 
@@ -53,11 +70,13 @@ Forge remains the authoring environment. This repository is an importer/tooling 
 
 The eventual pipeline is:
 
+```text
 external API description
   -> ingestion
   -> API capability MicroBundle definition
   -> Forge
   -> Experience that presents the appropriate GUI
   -> API invocation at runtime
+```
 
 For APIs that return expensive or stable geometry, terrain, meshes, or other world data, Forge can also define a MicroBundle-producing path so the result can become reusable content rather than being fetched repeatedly.
