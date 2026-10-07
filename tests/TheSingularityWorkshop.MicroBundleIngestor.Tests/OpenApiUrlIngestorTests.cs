@@ -41,7 +41,7 @@ public sealed class OpenApiUrlIngestorTests
                       "enum": [ "restaurant", "museum" ]
                     }
                   }
-                ]
+                ],
                 "responses": {
                   "200": {
                     "description": "Places found",
