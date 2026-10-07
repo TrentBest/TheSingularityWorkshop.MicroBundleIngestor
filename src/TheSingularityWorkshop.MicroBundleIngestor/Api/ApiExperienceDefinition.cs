@@ -20,7 +20,8 @@ public sealed record ApiOperationDefinition(
     [property: JsonPropertyName("path")] string Path,
     [property: JsonPropertyName("summary")] string? Summary,
     [property: JsonPropertyName("description")] string? Description,
-    [property: JsonPropertyName("parameters")] IReadOnlyList<ApiParameterDefinition> Parameters);
+    [property: JsonPropertyName("parameters")] IReadOnlyList<ApiParameterDefinition> Parameters,
+    [property: JsonPropertyName("responses")] IReadOnlyList<ApiResponseDefinition> Responses);
 
 public sealed record ApiParameterDefinition(
     [property: JsonPropertyName("name")] string Name,
@@ -29,3 +30,9 @@ public sealed record ApiParameterDefinition(
     [property: JsonPropertyName("schema")] string? SchemaType,
     [property: JsonPropertyName("description")] string? Description,
     [property: JsonPropertyName("enum")] IReadOnlyList<string> AllowedValues);
+
+public sealed record ApiResponseDefinition(
+    [property: JsonPropertyName("statusCode")] string StatusCode,
+    [property: JsonPropertyName("description")] string? Description,
+    [property: JsonPropertyName("schema")] string? SchemaType,
+    [property: JsonPropertyName("contentType")] string? ContentType);
