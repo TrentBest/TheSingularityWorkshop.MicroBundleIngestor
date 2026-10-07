@@ -42,6 +42,14 @@ public sealed class OpenApiUrlIngestorTests
                     }
                   }
                 ]
+                "responses": {
+                  "200": {
+                    "description": "Places found",
+                    "content": {
+                      "application/json": { "schema": { "type": "array" } }
+                    }
+                  }
+                }
               }
             }
           }
@@ -62,6 +70,9 @@ public sealed class OpenApiUrlIngestorTests
         Assert.Equal(
             ["restaurant", "museum"],
             definition.Operations[0].Parameters[1].AllowedValues);
+        Assert.Single(definition.Operations[0].Responses);
+        Assert.Equal("200", definition.Operations[0].Responses[0].StatusCode);
+        Assert.Equal("array", definition.Operations[0].Responses[0].SchemaType);
     }
 
     private sealed class StubHandler(string body) : HttpMessageHandler
