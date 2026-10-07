@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "TheSingularityWorkshop.MicroBundleIngestor": {
+      "commandName": "Project",
+      "commandLineArgs": "",
+      "dotnetRunMessages": true
+    }
+  }
+}
