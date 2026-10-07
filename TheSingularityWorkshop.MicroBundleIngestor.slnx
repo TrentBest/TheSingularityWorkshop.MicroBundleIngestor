@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/TheSingularityWorkshop.MicroBundleIngestor/TheSingularityWorkshop.MicroBundleIngestor.csproj" />
+  <Project Path="tests/TheSingularityWorkshop.MicroBundleIngestor.Tests/TheSingularityWorkshop.MicroBundleIngestor.Tests.csproj" />
+</Solution>
