@@ -2,81 +2,191 @@
 
 The Forge needs a way to turn an external capability into something an Experience can understand.
 
-This repository is the ingestion boundary.
+This repository is the ingestion and capability-definition boundary.
+
+## The central idea
+
+An API is not necessarily just something the application calls.
+
+It can itself become a reusable MicroBundle:
+
+    API contract
+        |
+        v
+    capability definition
+        |
+        v
+    MicroBundle
+        |
+        +-- required data
+        +-- connected ports
+        +-- FSM behavior
+        |
+        v
+    API call on behalf of the Experience
+
+That means an Experience can install a capability, provide the required data, connect that data to ports, and invoke the operation without embedding a bespoke API client.
+
+## Multiple API paths
+
+There are at least three useful paths.
+
+### Capability API
+
+The API contract becomes a reusable capability MicroBundle.
+
+### Content-producing API
+
+An API can produce durable or expensive content such as terrain, meshes, places, or world data. The result can become a separate content MicroBundle.
+
+### Repository capability
+
+The MicroBundle Repository is the first proving case.
+
+Its capability is intentionally simple:
+
+    Get(bundleId, version, contentHash)
+    Put(artifact)
+
+Forge is allowed to use Put. Other Experiences must not inherit Forge's publication authority.
+
+The Ingestor therefore models the repository as a capability with an explicit Forge-only publication policy. The policy is descriptive; the repository host must enforce it.
+
+## OpenAPI is an adapter, not the domain
+
+The current URL adapter accepts OpenAPI/Swagger JSON and reduces it to a canonical API definition.
+
+    URL
+      |
+      v
+    OpenApiUrlIngestor
+      |
+      v
+    ApiExperienceDefinition
+      |
+      v
+    CapabilityCompiler
+      |
+      v
+    CapabilityDefinition
+      |
+      v
+    Forge
+
+The capability model is transport-neutral. OpenAPI is only one way to discover a capability.
+
+Future adapters can ingest other sources without changing the capability domain.
+
+## Ports
+
+Each capability operation exposes input and output ports.
+
+The Ingestor supplies facts and semantic hints. Forge decides how those ports should be presented and wired.
+
+For example:
+
+- latitude and longitude can become one location control;
+- an enum can become a selection control;
+- a numeric constraint can become a slider;
+- credentials can become a credential binding.
+
+The Ingestor does not become a GUI framework.
 
 ## Visual Studio
 
-The repository includes the traditional `.sln` solution used by Visual Studio, containing:
+The repository includes the traditional solution used by Visual Studio, containing:
 
-- **TheSingularityWorkshop.MicroBundleIngestor** — executable/tooling project.
-- **TheSingularityWorkshop.MicroBundleIngestor.Tests** — xUnit test project.
+- TheSingularityWorkshop.MicroBundleIngestor — executable/tooling project.
+- TheSingularityWorkshop.MicroBundleIngestor.Tests — xUnit test project.
 
-The newer `.slnx` file is retained as an additional .NET solution representation.
+The solution is named TheSingularityWorkshop.MicroBundleIngestor.sln. The newer .slnx representation is retained as well.
 
-Open **TheSingularityWorkshop.MicroBundleIngestor.sln** in Visual Studio and the source and test projects will appear in Solution Explorer.
+## Current implementation
 
-## First target
+The current development line includes:
 
-Give the ingestor a URL containing an OpenAPI/Swagger JSON document.
+- OpenAPI/Swagger JSON ingestion;
+- canonical API definitions;
+- capability compilation;
+- semantic port hints;
+- the MicroBundle Repository capability definition;
+- Forge-only repository Put policy metadata;
+- unit tests for API ingestion and capability composition;
+- deterministic, transport-neutral domain types;
+- build validation through GitHub Actions.
 
-```text
-URL
-  -> MicroBundleIngestor
-  -> canonical API Experience definition
-  -> Forge
-  -> Experience GUI and request composition
-  -> external REST API
-  -> dynamic result
-```
+The Repository capability can be printed with:
 
-The ingestor does not hard-code a GUI for a particular API. It captures the information Forge needs to construct one.
+    MicroBundleIngestor --repository
 
-For example, a places API can become an Experience that asks the player for a location and category, composes the request, calls the API, and presents the returned places.
+An OpenAPI capability can be generated with:
 
-The same API description can later support a second path:
+    MicroBundleIngestor <openapi-or-swagger-json-url>
 
-```text
-API definition
-  -> request
-  -> mesh / terrain / place data
-  -> MicroBundle cache
-  -> Experience
-```
+## REST integration
 
-The API contract is reusable capability metadata. Returned world data is a potentially cacheable MicroBundle payload.
+The REST NuGet package is intentionally isolated behind an explicit project property:
 
-## REST repository boundary
+    UseMicroBundleRepositoryRest=true
 
-The project references `TheSingularityWorkshop.MicroBundleRepository.Rest` because the eventual publication path is:
+The package is not a core dependency of the ingestion domain.
 
-```text
-Forge / Ingestor
-  -> IMicroBundleRepository
-  -> REST repository adapter
-  -> MicroBundle Repository
-```
+This is deliberate. The package currently has a publication/feed dependency, and this repository must remain buildable without silently substituting a project reference or coupling the capability model to HTTP transport.
 
-The ingestor should never know whether the repository is backed by Azure, another service, or something else.
+Once the REST package is available from an approved feed, the integration path is:
 
-## Current MVP
+    Forge / Ingestor
+        |
+        v
+    capability definition
+        |
+        v
+    MicroBundleRepository.Rest
+        |
+        v
+    IMicroBundleRepository
+        |
+        v
+    Repository host
 
-The current command accepts one OpenAPI/Swagger JSON URL and emits the canonical API Experience definition as JSON.
+No NuGet publication is performed by this repository.
 
-No live repository publication is performed by this MVP.
+## Documentation
 
-## Architecture direction
+- docs/DOMAIN.md — domain model, capability paths, ports, authorization boundary.
+- docs/THEORY.md — address-space efficiency, sparse representation, and capability-space theory.
 
-Forge remains the authoring environment. This repository is an importer/tooling boundary, not a replacement for Forge.
+## Architecture boundary
 
-The eventual pipeline is:
+This repository is not:
 
-```text
-external API description
-  -> ingestion
-  -> API capability MicroBundle definition
-  -> Forge
-  -> Experience that presents the appropriate GUI
-  -> API invocation at runtime
-```
+- Forge;
+- a GUI framework;
+- a general REST client;
+- a storage provider;
+- an Experience runtime;
+- or a replacement for FSM_COS.
 
-For APIs that return expensive or stable geometry, terrain, meshes, or other world data, Forge can also define a MicroBundle-producing path so the result can become reusable content rather than being fetched repeatedly.
+Its responsibility is to turn discovered capabilities into precise, reusable definitions that Forge can compose into Experiences.
+
+The eventual path is:
+
+    external capability
+        |
+        v
+    ingestion
+        |
+        v
+    capability definition
+        |
+        v
+    deterministic MicroBundle
+        |
+        v
+    Forge
+        |
+        v
+    Experience
+        |
+        v
+    FSM execution
