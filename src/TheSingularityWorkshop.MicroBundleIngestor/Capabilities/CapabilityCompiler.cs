@@ -23,7 +23,15 @@ public static class CapabilityCompiler
                         InferSemanticType(parameter),
                         parameter.AllowedValues))
                     .ToArray(),
-                []))
+                operation.Responses
+                    .Select(response => new CapabilityPortDefinition(
+                        $"response-{response.StatusCode}",
+                        CapabilityPortDirection.Output,
+                        response.SchemaType ?? "unknown",
+                        false,
+                        InferResponseSemanticType(response),
+                        []))
+                    .ToArray()))
             .ToArray();
 
         return new CapabilityDefinition(
@@ -50,4 +58,9 @@ public static class CapabilityCompiler
 
         return null;
     }
+
+    private static string? InferResponseSemanticType(ApiResponseDefinition response) =>
+        response.ContentType?.StartsWith("application/json", StringComparison.OrdinalIgnoreCase) == true
+            ? "json"
+            : response.ContentType;
 }
