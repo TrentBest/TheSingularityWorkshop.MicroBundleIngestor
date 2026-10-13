@@ -21,7 +21,7 @@ An API contract can be represented as a capability so an Experience can provide 
 
 ## 🟣 02 Why
 
-This boundary lets the Workshop compose the capability without confusing it with the host, user interface, external provider, or application authority. The implementation status and limits described in the detailed guide remain authoritative.
+External APIs are often trapped inside application-specific clients. Treating an API contract as a capability gives Experiences a reusable composition boundary while keeping ingestion, data binding, and actual invocation distinct.
 
 ## 🔺 03 How
 
