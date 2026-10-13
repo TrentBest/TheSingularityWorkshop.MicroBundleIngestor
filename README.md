@@ -1,4 +1,43 @@
+![The Singularity Workshop animated moniker](https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.Renderer/development/docs/assets/moniker.svg)
+
 # TheSingularityWorkshop.MicroBundleIngestor
+
+
+> **The ingestion boundary for turning external APIs into reusable capabilities.**
+
+An API contract can be represented as a capability so an Experience can provide required data and invoke it without embedding a bespoke API client everywhere.
+
+```mermaid
+flowchart TD
+  X[External API contract] --> I[Ingestion]
+  I --> C[Capability definition]
+  C --> B[MicroBundle]
+  B --> E[Experience invocation]
+```
+
+## 🟦 01 What
+
+An API contract can be represented as a capability so an Experience can provide required data and invoke it without embedding a bespoke API client everywhere.
+
+## 🟣 02 Why
+
+This boundary lets the Workshop compose the capability without confusing it with the host, user interface, external provider, or application authority. The implementation status and limits described in the detailed guide remain authoritative.
+
+## 🔺 03 How
+
+Separate external-contract ingestion from capability definition and runtime invocation. Content-producing APIs may also yield durable artifacts, which should have their own identity and lifecycle.
+
+## 🟢 04 See it in a minute
+
+Start with the multiple API paths section below and use the documented tests to validate the current ingestion and capability contracts.
+
+## 🟪 05 Documentation and theory
+
+[Multiple API paths](#multiple-api-paths) · [Repository documentation](docs/)
+
+---
+
+## Detailed guide
 
 The Forge needs a way to turn an external capability into something an Experience can understand.
 
