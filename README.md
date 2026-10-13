@@ -17,7 +17,7 @@ flowchart TD
 
 ## 🟦 01 What
 
-An API contract can be represented as a capability so an Experience can provide required data and invoke it without embedding a bespoke API client everywhere.
+It converts an external contract into a reusable capability definition. Ingestion and binding are distinct from invoking the external service.
 
 ## 🟣 02 Why
 
