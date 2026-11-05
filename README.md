@@ -3,6 +3,7 @@
 # TheSingularityWorkshop.MicroBundleIngestor
 
 
+[![Sith Policy](assets/sith-policy.svg)](https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleIngestor/actions/workflows/sith-policy.yml)
 > **The ingestion boundary for turning external APIs into reusable capabilities.**
 
 An API contract can be represented as a capability so an Experience can provide required data and invoke it without embedding a bespoke API client everywhere.
