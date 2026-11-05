@@ -1,0 +1,17 @@
+{
+  "repository": "TrentBest/TheSingularityWorkshop.MicroBundleIngestor",
+  "policy": "exactly-master-and-development",
+  "required_branches": [
+    "development",
+    "master"
+  ],
+  "actual_branches": [
+    "development",
+    "master"
+  ],
+  "branch_count": 2,
+  "status": "COMPLIANT",
+  "evaluated_at": "2026-11-05T04:26:29Z",
+  "workflow_run": "https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleIngestor/actions/runs/41967811658",
+  "triggering_commit": "662e5ec41cfd27f55d8f93aaae7f0d15cceefe6d"
+}
