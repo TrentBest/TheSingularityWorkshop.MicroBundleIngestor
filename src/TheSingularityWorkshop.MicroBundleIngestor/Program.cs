@@ -5,7 +5,7 @@ using TheSingularityWorkshop.MicroBundleIngestor.Capabilities;
 if (args.Length == 1 && args[0].Equals("--repository", StringComparison.OrdinalIgnoreCase))
 {
     WriteJson(RepositoryCapabilityDefinition.Create());
-    return;
+    return 0;
 }
 
 if (args.Length != 1 || !Uri.TryCreate(args[0], UriKind.Absolute, out var sourceUrl))
