@@ -22,6 +22,7 @@ var definition = await ingestor.IngestAsync(sourceUrl);
 var capability = CapabilityCompiler.Compile(definition);
 
 WriteJson(capability);
+return 0;
 
 static void WriteJson(object value) =>
     Console.WriteLine(JsonSerializer.Serialize(
