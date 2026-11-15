@@ -1,3 +1,4 @@
+using Xunit;
 using TheSingularityWorkshop.MicroBundleIngestor.Api;
 using TheSingularityWorkshop.MicroBundleIngestor.Capabilities;
 
