@@ -1,3 +1,4 @@
+using Xunit;
 using System.Net;
 using System.Text;
 using TheSingularityWorkshop.MicroBundleIngestor.Api;
