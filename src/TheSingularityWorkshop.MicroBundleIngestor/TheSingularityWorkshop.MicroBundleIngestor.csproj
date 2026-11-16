@@ -20,6 +20,6 @@
     Enable this explicitly after the REST package is available from an approved feed.
   -->
   <ItemGroup Condition="'$(UseMicroBundleRepositoryRest)' == 'true'">
-    <PackageReference Include="TheSingularityWorkshop.MicroBundleRepository.Rest" Version="0.1.0-alpha.5" />
+    <PackageReference Include="TheSingularityWorkshop.MicroBundleRepository.Rest" Version="0.1.0-alpha.2" />
   </ItemGroup>
 </Project>
