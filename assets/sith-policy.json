@@ -12,7 +12,7 @@
   ],
   "branch_count": 3,
   "status": "NON-COMPLIANT",
-  "evaluated_at": "2026-11-19T12:59:28Z",
-  "workflow_run": "https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleIngestor/actions/runs/44528992249",
-  "triggering_commit": "5e9c9a5401fcb88128705cab55768f7838eff7b1"
+  "evaluated_at": "2026-11-20T12:50:59Z",
+  "workflow_run": "https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleIngestor/actions/runs/44739200885",
+  "triggering_commit": "aa884b9cd8d597b25d36edf05c4e62340f4aaa30"
 }
